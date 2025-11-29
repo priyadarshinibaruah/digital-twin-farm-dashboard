@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Futuristic Green Monitor</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <!-- Subtle scan-line overlay -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main class="dashboard">
+    <header class="dash-header">
+      <h1>Digital Monitor</h1>
+      <p>Live sensor telemetry</p>
+    </header>
+
+    <!-- Glowing rounded-rectangle panel shell -->
+    <section class="panel-shell">
+      <div class="panel-grid">
+        <!-- Moisture -->
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Moisture (%)</h2>
+          </div>
+          <div class="panel-body">
+            <div class="metric-row">
+              <div class="metric-large" id="moisture-value">--</div>
+            </div>
+            <canvas id="moisture-spark" class="sparkline" width="400" height="80" aria-label="Moisture sparkline"></canvas>
+          </div>
+        </article>
+
+        <!-- Soil pH -->
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Soil pH</h2>
+          </div>
+          <div class="panel-body">
+            <div class="metric-row">
+              <div class="metric-large" id="ph-value">--</div>
+            </div>
+            <div class="bars" aria-label="pH bar indicators">
+              <div class="bar"><span class="bar-fill" id="ph-bar-1"></span></div>
+              <div class="bar"><span class="bar-fill" id="ph-bar-2"></span></div>
+              <div class="bar"><span class="bar-fill" id="ph-bar-3"></span></div>
+              <div class="bar"><span class="bar-fill" id="ph-bar-4"></span></div>
+              <div class="bar"><span class="bar-fill" id="ph-bar-5"></span></div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Temperature -->
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Temperature (°C)</h2>
+          </div>
+          <div class="panel-body">
+            <div class="metric-row">
+              <div class="metric-large" id="temp-value">--</div>
+            </div>
+            <canvas id="temp-spark" class="sparkline" width="400" height="80" aria-label="Temperature sparkline"></canvas>
+          </div>
+        </article>
+
+        <!-- NPK Requirements -->
+        <article class="panel">
+          <div class="panel-header">
+            <h2>NPK Requirements (%)</h2>
+          </div>
+          <div class="panel-body">
+            <div class="npk-row">
+              <div class="npk-item">
+                <div class="npk-label">N</div>
+                <div class="metric-large" id="npk-n">--</div>
+              </div>
+              <div class="npk-item">
+                <div class="npk-label">P</div>
+                <div class="metric-large" id="npk-p">--</div>
+              </div>
+              <div class="npk-item">
+                <div class="npk-label">K</div>
+                <div class="metric-large" id="npk-k">--</div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="dash-footer">
+      <span>Status: Online • Refresh every 2s</span>
+    </footer>
+  </main>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

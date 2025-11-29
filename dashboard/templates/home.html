@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farm Dashboard</title>
+    <link rel="icon" href="{% static 'favicon/favicon.ico' %}" type="image/x-icon">
+    <!-- Import JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
+    {% if show_dashboard %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% endif %}
+    <style>
+        body {
+            background-color: #153b1f;   /* Dark green background */
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .box {
+            width: 70vw;
+            height: auto; /* The constraint we must work around */
+            margin: 20px auto;
+            background-color: #1e4a2a;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            /* Note: If you want the video to ignore the 20px padding of the box, 
+            you may need to adjust the structure slightly, but we'll assume it goes inside the padding for now. */
+        }
+
+        .picture-container {
+            position: relative;
+            width: 70%;
+            max-width: 800px;
+            height: auto;
+            aspect-ratio: 16 / 10; /* consistent shape */
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            background-color: #000;
+        }
+
+        .picture-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* ✅ shows full image without cropping */
+            display: block;
+            border-radius: 12px;
+            background-color: #000;
+        }
+
+        .scanner-beam {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(0, 255, 0, 0) 0%,
+                rgba(0, 255, 0, 0.4) 50%,
+                rgba(0, 255, 0, 0) 100%
+            );
+            animation: scan-horizontal 3s linear infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        @keyframes scan-horizontal {
+            0%   { left: -100%; }
+            50%  { left: 100%; }
+            100% { left: -100%; }
+        }
+
+
+        h1, h2 {
+            text-align: center;
+            font-weight: 400;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 14px;
+            border-radius: 7px;
+            background: yellow; /* slider track background */
+            outline: none;
+            margin-top: 5px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2e6b3f;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2e6b3f;
+            cursor: pointer;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #2e6b3f;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3a8f50;
+        }
+
+        pre {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Farm Parameter Input</h1>
+
+    <!-- Box 1: Sliders -->
+    <div class="box">
+        <form action="/predict/" method="get">
+            <label>Temperature (°C):</label>
+            <input type="range" name="temp" min="10" max="40" value="{{ temp|default:25 }}">
+
+            <label>Moisture (%):</label>
+            <input type="range" name="moisture" min="0" max="100" value="{{ moisture|default:50 }}">
+
+            <label>Soil pH:</label>
+            <input type="range" name="ph" min="3" max="9" step="0.1" value="{{ ph|default:6.5 }}">
+
+            <label>Pest Infestation Level:</label>
+            <input type="range" name="pest" min="0" max="100" value="{{ pest|default:0 }}">
+
+            <button type="submit">Get Treatment Recommendation</button>
+        </form>
+
+    </div>
+
+    <!-- Box 2: AI Recommendation -->
+    <div class="box">
+        <h2>Recommended Treatment:</h2>
+        <pre style="white-space:pre-wrap;">{{ recommendation }}</pre>
+    </div>
+
+
+    <!-- Box 3: Placeholder for 3D Model 1 -->
+   <div class="box picture-container">
+        <img src="{% static 'images/AI Drone.png' %}" alt="Drone Image">
+        <div class="scanner-beam"></div>
+    </div>
+
+
+    <!-- Box 4: Placeholder for 3D Model 2 -->
+    <div class="dashboard-shell">
+        {% include "dashboard_monitor.html" %}
+    </div>
+</body>
+</html>
